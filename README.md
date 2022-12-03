@@ -155,3 +155,14 @@ Backend-часть предполагает реализацию следующ�
 pip install poetry
 poetry install
 ```
+### Создание и запуск образа с PostgreSQL
+
+```python
+docker run --name cw_6 -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:12.4-alpine
+```
+
+### Миграция таблиц в базу данных
+
+```python
+python manage.py migrate
+```
