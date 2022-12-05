@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from .managers import UserManager
-# from phonenumber_field.modelfields import PhoneNumberField
+from phonenumber_field.modelfields import PhoneNumberField
 # from django.utils.translation import gettext_lazy as _
 
 
@@ -20,10 +20,11 @@ class User(AbstractBaseUser):
 
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
-    phone = models.CharField(max_length=15, blank=True, unique=True)
+    phone = PhoneNumberField(blank=True, unique=True)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
     image = models.ImageField(upload_to="avatars/")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Пользователь"
@@ -31,7 +32,7 @@ class User(AbstractBaseUser):
         ordering = ['id']
 
     def __str__(self):
-        return self.first_name
+        return self.email
 
     @property
     def is_admin(self):

@@ -22,8 +22,6 @@ ALLOWED_HOSTS = [] if DEBUG else ['*']
 
 
 # Application definition
-
-# TODO здесь тоже нужно подключить Swagger и corsheaders
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -32,7 +30,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework_simplejwt",
+    "corsheaders",
     "djoser",
+    "phonenumber_field",
+    "drf_spectacular",
 
     # Local apps
     "users",
@@ -72,13 +74,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "skymarket.wsgi.application"
 
-# TODO здесь мы настраиваем аутентификацию и пагинацию
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication'],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 DJOSER = {
     'SERIALIZERS': {'user_create': 'users.serializers.UserRegistrationSerializer'},
     'LOGIN_FIELD': 'email'
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Django Course project 6",
+    "DESCRIPTION": "Course project 6. API development on Django.",
+    "VERSION": "1.0.0",
+    "CONTACT": {
+        "name": "Aleksey Lesnikov",
+        "url": "https://github.com/altec3",
+    },
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "persistAuthorization": True,
+        "displayOperationId": True,
+    },
 }
 
 # Database
@@ -156,6 +176,3 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
 AUTH_USER_MODEL = "users.User"
-
-if __name__ == "__main__":
-    print(DATABASES)
