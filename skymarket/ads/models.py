@@ -8,8 +8,8 @@ class Ad(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=1000, blank=True)
     price = models.PositiveIntegerField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="ads/%Y/%m/%d/")
+    author = models.ForeignKey(User, related_name="ads", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="ads/%Y/%m/%d/", null=True)
 
     class Meta:
         verbose_name = "Объявление"
@@ -19,12 +19,24 @@ class Ad(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def phone(self):
+        return str(self.author.phone) if self.author.phone else None
+
+    @property
+    def author_first_name(self):
+        return self.author.first_name if self.author.first_name else None
+
+    @property
+    def author_last_name(self):
+        return self.author.last_name if self.author.last_name else None
+
 
 class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ad, related_name="comments", on_delete=models.CASCADE)
     text = models.TextField(max_length=1000)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, related_name="comments", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "Комментарий"
