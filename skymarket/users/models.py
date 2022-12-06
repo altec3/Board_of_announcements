@@ -18,10 +18,10 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
+    first_name = models.CharField(max_length=64, blank=True)
+    last_name = models.CharField(max_length=64, blank=True)
     phone = PhoneNumberField(blank=True, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, max_length=254)
     role = models.CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
     image = models.ImageField(upload_to="avatars/")
     is_active = models.BooleanField(default=True)
