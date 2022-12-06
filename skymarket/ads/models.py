@@ -32,4 +32,5 @@ class Comment(models.Model):
         ordering = ['created_at']
 
     def __str__(self):
-        return self.text[:20]
+        text = str(self.text)
+        return text if len(text) <= 20 else text[:20] + "..."
