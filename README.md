@@ -166,3 +166,11 @@ docker run --name cw_6 -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:12
 ```python
 python manage.py migrate
 ```
+
+### Загрузка фикстур в базу данных
+
+```python
+python manage.py loaddata users.json
+python manage.py loaddata ads.json
+python manage.py loaddata comments.json
+```
