@@ -18,8 +18,8 @@ urlpatterns = [
 
     # URLs аутентификации по JWT.
     path("api/token/", TokenObtainPairView.as_view(), name="jwt-create"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
+    path("api/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
+    path("api/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
 
     # URLs документации.
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
