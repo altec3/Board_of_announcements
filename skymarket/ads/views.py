@@ -1,9 +1,10 @@
 from rest_framework import pagination, viewsets
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from ads.models import Ad
 from ads.permissions import IsOwnerOrStaff
-from ads.serializers import AdListSerializer, AdCreateSerializer
+from ads.serializers import AdListSerializer, AdDetailSerializer
 
 
 class AdPagination(pagination.PageNumberPagination):
@@ -16,9 +17,9 @@ class AdViewSet(viewsets.ModelViewSet):
     pagination_class = AdPagination
 
     serializers = {
-        "create": AdCreateSerializer,
+        "list": AdListSerializer,
     }
-    default_serializer = AdListSerializer
+    default_serializer = AdDetailSerializer
 
     permissions = {
         "create": [IsAuthenticated()],
@@ -42,3 +43,17 @@ class AdViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     pass
+
+
+class AdsByUserListView(ListAPIView):
+    """
+    Get listing of ads from the current user
+    """
+    queryset = Ad.objects.all()
+    pagination_class = AdPagination
+    serializer_class = AdListSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrStaff]
+
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset.filter(author_id=self.request.user.pk)

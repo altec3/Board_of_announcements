@@ -14,7 +14,7 @@ class AdListSerializer(serializers.ModelSerializer):
         fields = ["pk", "image", "title", "price", "description"]
 
 
-class AdCreateSerializer(serializers.ModelSerializer):
+class AdDetailSerializer(serializers.ModelSerializer):
     author_id = serializers.ReadOnlyField(source='author.pk')
 
     class Meta:
@@ -23,8 +23,3 @@ class AdCreateSerializer(serializers.ModelSerializer):
             "pk", "image", "title", "price", "phone", "description",
             "author_first_name", "author_last_name", "author_id"
         ]
-
-
-class AdDetailSerializer(serializers.ModelSerializer):
-    # TODO сериалайзер для модели
-    pass

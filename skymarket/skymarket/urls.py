@@ -5,10 +5,6 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-"""
-http://127.0.0.1:8000/api/users/
-http://127.0.0.1:8000/api/ads/
-"""
 
 urlpatterns = [
     path("api/admin/", admin.site.urls),
