@@ -1,8 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import pagination, viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
+from ads.filters import AdsFilter
 from ads.models import Ad, Comment
 from ads.permissions import IsOwnerOrStaff
 from ads.serializers import AdListSerializer, AdDetailSerializer, CommentSerializer
@@ -24,6 +26,8 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     pagination_class = AdPagination
     http_method_names = ["get", "post", "patch", "delete"]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = AdsFilter
 
     serializers = {
         "list": AdListSerializer,

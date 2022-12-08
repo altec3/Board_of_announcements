@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "djoser",
     "phonenumber_field",
     "drf_spectacular",
+    "django_filters",
 
     # Local apps
     "users",
