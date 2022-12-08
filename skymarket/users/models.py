@@ -23,7 +23,7 @@ class User(AbstractBaseUser):
     phone = PhoneNumberField(blank=True, unique=True)
     email = models.EmailField(unique=True, max_length=254)
     role = models.CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
-    image = models.ImageField(upload_to="avatars/")
+    image = models.ImageField(upload_to="avatars/", null=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:

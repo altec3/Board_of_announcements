@@ -14,22 +14,10 @@ class Ad(models.Model):
     class Meta:
         verbose_name = "Объявление"
         verbose_name_plural = "Объявления"
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.title
-
-    @property
-    def phone(self):
-        return str(self.author.phone) if self.author.phone else None
-
-    @property
-    def author_first_name(self):
-        return self.author.first_name if self.author.first_name else None
-
-    @property
-    def author_last_name(self):
-        return self.author.last_name if self.author.last_name else None
 
 
 class Comment(models.Model):
@@ -41,7 +29,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Комментарий"
         verbose_name_plural = "Комментарии"
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         text = str(self.text)
