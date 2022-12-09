@@ -92,8 +92,22 @@ DJOSER = {
         'current_user': 'users.serializers.CurrentUserSerializer',
     },
     'LOGIN_FIELD': 'email',
-    'HIDE_USERS': False
+    'HIDE_USERS': False,
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'EMAIL': {
+        'password_reset': 'users.email.PasswordResetEmail',
+    }
 }
+# Include Email Backend
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = bool(int(os.getenv('EMAIL_USE_TLS')))
+EMAIL_USE_SSL = bool(int(os.getenv('EMAIL_USE_SSL')))
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+SERVER_EMAIL = os.environ.get("EMAIL_HOST_USER")
+DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_HOST_USER")
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Django Course project 6",
@@ -172,16 +186,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# Include Email Backend
-# TODO эти переменные мы добавили чтобы помочь Вам настроить почтовый ящик на django.
-# TODO теперь Вам необходимо создать файл .env на основе .env.example
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
 AUTH_USER_MODEL = "users.User"
