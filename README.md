@@ -169,28 +169,40 @@ docker-compouse up --build -d
 ---
 ## Запуск проекта через django manage.py
 
-### Установка зависимостей
+### Установить зависимости
 
 ```python
 pip install poetry
 poetry install
 ```
-### Создание и запуск образа с PostgreSQL
+### Запустить frontend-часть проекта.
 
+Перейти в папку `market_postgres`:
 ```python
-docker run --name cw_6 -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:12.4-alpine
+cd market_postgres
+```
+Выполнить команду:
+```python
+docker-compouse up --build -d
 ```
 
-### Миграция таблиц в базу данных
+### Произвести миграцию таблиц в базу данных
 
 ```python
 python manage.py migrate
 ```
 
-### Загрузка фикстур в базу данных
+### Загрузить фикстуры в базу данных
 
 ```python
 python manage.py loaddata users.json
 python manage.py loaddata ads.json
 python manage.py loaddata comments.json
 ```
+
+### Запустить сервер
+
+```python
+python manage.py runserver
+```
+Фронтенд-часть проекта будет доступна по адресу `localhost:3000` и будет ваимодействовать с запущенным бэкенд-сервером.
