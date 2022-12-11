@@ -16,11 +16,16 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name="jwt-create"),
     path("api/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
     path("api/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
-
-    # URLs документации.
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    urlpatterns = [
+        # URLs документации.
+        path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')),
+
+        # URLs Debug Toolbar
+        path('__debug__/', include('debug_toolbar.urls')),
+    ] + urlpatterns

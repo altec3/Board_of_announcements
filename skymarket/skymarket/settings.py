@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "drf_spectacular",
     "django_filters",
+    "debug_toolbar",
 
     # Local apps
     "users",
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "skymarket.urls"
@@ -188,3 +190,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "users.User"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
