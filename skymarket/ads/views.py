@@ -23,7 +23,7 @@ class AdPagination(pagination.PageNumberPagination):
     destroy=extend_schema(summary="Удалить объявление"),
 )
 class AdViewSet(viewsets.ModelViewSet):
-    queryset = Ad.objects.all()
+    queryset = Ad.objects.all().select_related("author")
     pagination_class = AdPagination
     http_method_names = ["get", "post", "patch", "delete"]
     filter_backends = (DjangoFilterBackend,)
@@ -63,13 +63,12 @@ class AdViewSet(viewsets.ModelViewSet):
 )
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    pagination_class = AdPagination
     permission_classes = [IsAuthenticated, IsOwnerOrStaff]
     serializer_class = CommentSerializer
     http_method_names = ["get", "post", "patch", "delete"]
 
     def get_queryset(self):
-        return self.queryset.filter(ad=self.kwargs['ad_pk'])
+        return self.queryset.filter(ad=self.kwargs['ad_pk']).select_related("author")
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, ad_id=self.kwargs['ad_pk'])
