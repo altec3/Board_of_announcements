@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import pagination, viewsets
-from rest_framework.generics import ListAPIView
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from ads.filters import AdsFilter
@@ -53,6 +53,19 @@ class AdViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    @extend_schema(summary="Мои объявления", responses=AdListSerializer)
+    @action(detail=False, methods=['get'], permission_classes=[IsOwnerOrStaff], url_path='me')
+    def get_ads_by_user(self, request):
+        """
+        Get listing of ads from the current user
+        """
+        ads = Ad.objects.all().filter(author_id=self.request.user.pk)
+        paginator = AdPagination()
+
+        page_obj = paginator.paginate_queryset(queryset=ads, request=request)
+
+        return paginator.get_paginated_response(AdListSerializer(page_obj, many=True).data)
+
 
 @extend_schema_view(
     list=extend_schema(summary="Список отзывов к объявлению"),
@@ -72,18 +85,3 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user, ad_id=self.kwargs['ad_pk'])
-
-
-@extend_schema(summary="Мои объявления")
-class AdsByUserListView(ListAPIView):
-    """
-    Get listing of ads from the current user
-    """
-    queryset = Ad.objects.all()
-    pagination_class = AdPagination
-    serializer_class = AdListSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrStaff]
-
-    def get_queryset(self):
-        queryset = self.queryset
-        return queryset.filter(author_id=self.request.user.pk)
